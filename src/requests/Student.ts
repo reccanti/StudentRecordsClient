@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 import StudentFormatter from '../formatters/Student';
 import CourseFormatter from '../formatters/Course';
 

@@ -4,10 +4,10 @@
 namespace CourseFormat {
     
     /**
-     * Print a formatted list of students
+     * Print a formatted list of course
      */
     export function printList (courses) {
-        console.log('\nCourse: \n');
+        console.log('\nCourses: \n');
         courses.map(course => {
             console.log(`ID: ${course.id}`);
             console.log(`Name: ${course.name}`);

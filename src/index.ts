@@ -3,12 +3,13 @@ import * as yargs from 'yargs';
 import axios from 'axios'
 
 import StudentRequest from './requests/Student';
+import MajorRequest from './requests/Major';
 
 const base_url = process.env["API_URL"];
 
 const argv = yargs
     .usage('$0 <cmd> [args]')
-    .command('majors', 'Get a list of all majors')
+    .command('major [id]', 'Get information about majors')
     .command('student [id]', 'Get information about students', yargs => {
         return yargs.options({
             'c': {
@@ -22,20 +23,18 @@ const argv = yargs
     .help()
     .argv;
 
-
-// console.log(argv);
-
 // display all majors
-if (argv._[0] === 'majors') {
-    console.log('\nMajors: \n')
-    axios
-        .get(`${base_url}/api/major`)
-        .then( response => {
-            response.data.map( major => {
-                console.log(`ID: ${major.id}`);
-                console.log(`Name: ${major.name}\n`);
-            });
-        });
+if (argv._[0] === 'major') {
+
+    // single major
+    if (argv.id) {
+        MajorRequest.getById(argv.id);
+    }
+    
+    // multiple majors
+    else {
+        MajorRequest.getAll();
+    }
 }
 
 // display all courses
