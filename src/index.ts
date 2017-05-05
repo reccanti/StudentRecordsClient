@@ -2,19 +2,9 @@ import '../.env';
 import * as yargs from 'yargs';
 import axios from 'axios'
 
+import StudentRequest from './requests/Student';
+
 const base_url = process.env["API_URL"];
-
-// fetch(`http://127.0.0.1/api/major`).then(function(res) {
-//     return res.text();
-// }).then(function (json) {
-//     console.log(json);
-// }).catch(function (err) {
-//     console.log(err);
-// });
-
-// axios.get(`http://127.0.0.1:8080/api/major`).then( res => {
-//     return console.log(res); 
-// });
 
 const argv = yargs
     .usage('$0 <cmd> [args]')
@@ -65,45 +55,20 @@ else if (argv._[0] === 'courses') {
 
 // display student information
 else if (argv._[0] === 'student') {
+    // single student
     if (argv.id) {
+
+        // available courses
         if (argv.availableCourses) {
-            console.log('\nCourses: \n');
-            axios
-                .get(`${base_url}/api/student/${argv.id}/availableCourses`)
-                .then( response => {
-                    response.data.map( course => {
-                        console.log(`ID: ${course.id}`);
-                        console.log(`Name: ${course.name}`);
-                        console.log(`Required Major ID: ${course.major_id}\n`);
-                    });
-                });
+            StudentRequest.getAvailableCourses(argv.id);
         }
         else {
-            console.log('\nStudents: \n')
-            axios
-                .get(`${base_url}/api/student/${argv.id}`)
-                .then( response => {
-                    const student = response.data;
-                    console.log(`ID: ${student.id}`);
-                    console.log(`Name: ${student.first} ${student.last}`);
-                    console.log(`Major ID: ${student.major_id}\n`);
-                })
-                .catch( err => {
-                    console.log(`${err.response.statusText}\n`);
-                });
+            StudentRequest.getById(argv.id);
         }
-    } else {
-        console.log('\nStudents: \n')
-        axios
-            .get(`${base_url}/api/student`)
-            .then( response => {
-                response.data.map( student => {
-                    console.log(`ID: ${student.id}`);
-                    console.log(`Name: ${student.first} ${student.last}`);
-                    console.log(`Major ID: ${student.major_id}\n`);
-                });
-            });
+    } 
+    
+    // multiple students
+    else {
+        StudentRequest.getAll()
     }
 }
-
-// display all courses
