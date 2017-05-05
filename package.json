@@ -1,0 +1,9 @@
+{
+  "name": "StudentRecordsClient",
+  "version": "0.0.1",
+  "description": "A Client to access the StudentRecords API",
+  "main": "index.js",
+  "repository": "git@github.com:reccanti/StudentRecordsClient.git",
+  "author": "Ben Wilcox <reccanti@gmail.com>",
+  "license": "MIT"
+}
