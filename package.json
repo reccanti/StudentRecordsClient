@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "start": "npm run compile && node dist/index.js",
-    "compile": "tsc"
+    "compile": "tsc",
+    "StudentRecords": "node dist/index.js"
   },
   "devDependencies": {
     "@types/node-fetch": "^1.6.7",
