@@ -36,12 +36,14 @@ const argv = yargs
                 alias:"student_id",
                 describe: "The ID of the student we want to enroll in a course",
                 type: "number",
+                demandOption: true,
                 requiresArg: true
             },
             'c': {
                 alias:"course_id",
                 describe: "The ID of the course we want to enroll the student in",
                 type: "number",
+                demandOption: true,
                 requiresArg: true
             }
         });
