@@ -19,10 +19,21 @@ const base_url = process.env["API_URL"];
 const argv = yargs
     .usage('$0 <cmd> [args]')
     .command('majors', 'Get a list of all majors')
-    .command('students', 'Get a list of students')
-    .command('courses', 'Get ta list of courses')
+    .command('student [id]', 'Get information about students', yargs => {
+        return yargs.options({
+            'c': {
+                alias: "availableCourses",
+                describe: 'List the courses available to the given student',
+                type: 'boolean'
+            }
+        });
+    })
+    .command('courses', 'Get a list of courses')
     .help()
     .argv;
+
+
+// console.log(argv);
 
 // display all majors
 if (argv._[0] === 'majors') {
@@ -37,7 +48,7 @@ if (argv._[0] === 'majors') {
         });
 }
 
-// display all students
+// display all courses
 else if (argv._[0] === 'courses') {
     console.log('\nCourses: \n')
     axios
@@ -51,18 +62,48 @@ else if (argv._[0] === 'courses') {
         });
 }
 
-// display all students
-else if (argv._[0] === 'students') {
-    console.log('\nStudents: \n')
-    axios
-        .get(`${base_url}/api/student`)
-        .then( response => {
-            response.data.map( student => {
-                console.log(`ID: ${student.id}`);
-                console.log(`Name: ${student.first} ${student.last}`);
-                console.log(`Major ID: ${student.major_id}\n`);
+
+// display student information
+else if (argv._[0] === 'student') {
+    if (argv.id) {
+        if (argv.availableCourses) {
+            console.log('\nCourses: \n');
+            axios
+                .get(`${base_url}/api/student/${argv.id}/availableCourses`)
+                .then( response => {
+                    response.data.map( course => {
+                        console.log(`ID: ${course.id}`);
+                        console.log(`Name: ${course.name}`);
+                        console.log(`Required Major ID: ${course.major_id}\n`);
+                    });
+                });
+        }
+        else {
+            console.log('\nStudents: \n')
+            axios
+                .get(`${base_url}/api/student/${argv.id}`)
+                .then( response => {
+                    const student = response.data;
+                    console.log(`ID: ${student.id}`);
+                    console.log(`Name: ${student.first} ${student.last}`);
+                    console.log(`Major ID: ${student.major_id}\n`);
+                })
+                .catch( err => {
+                    console.log(`${err.response.statusText}\n`);
+                });
+        }
+    } else {
+        console.log('\nStudents: \n')
+        axios
+            .get(`${base_url}/api/student`)
+            .then( response => {
+                response.data.map( student => {
+                    console.log(`ID: ${student.id}`);
+                    console.log(`Name: ${student.first} ${student.last}`);
+                    console.log(`Major ID: ${student.major_id}\n`);
+                });
             });
-        });
+    }
 }
 
 // display all courses
