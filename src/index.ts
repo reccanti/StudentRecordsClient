@@ -51,4 +51,18 @@ else if (argv._[0] === 'courses') {
         });
 }
 
+// display all students
+else if (argv._[0] === 'students') {
+    console.log('\nStudents: \n')
+    axios
+        .get(`${base_url}/api/student`)
+        .then( response => {
+            response.data.map( student => {
+                console.log(`ID: ${student.id}`);
+                console.log(`Name: ${student.first} ${student.last}`);
+                console.log(`Major ID: ${student.major_id}\n`);
+            });
+        });
+}
+
 // display all courses
