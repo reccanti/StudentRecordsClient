@@ -5,6 +5,7 @@ import axios from 'axios'
 import StudentRequest from './requests/Student';
 import MajorRequest from './requests/Major';
 import CourseRequest from './requests/Course';
+import EnrollmentRequest from './requests/Enrollment';
 
 const base_url = process.env["API_URL"];
 
@@ -26,6 +27,22 @@ const argv = yargs
                 alias: "enrolledStudents",
                 describe: 'List the students who are currently enrolled in the course',
                 type: 'boolean'
+            }
+        });
+    })
+    .command('enroll', 'Enroll a student in a specified course', yargs => {
+        return yargs.options({
+            's': {
+                alias:"student_id",
+                describe: "The ID of the student we want to enroll in a course",
+                type: "number",
+                requiresArg: true
+            },
+            'c': {
+                alias:"course_id",
+                describe: "The ID of the course we want to enroll the student in",
+                type: "number",
+                requiresArg: true
             }
         });
     })
@@ -85,4 +102,9 @@ else if (argv._[0] === 'student') {
     else {
         StudentRequest.getAll()
     }
+}
+
+// enroll a student in a course
+else if (argv._[0] === 'enroll') {
+    EnrollmentRequest.enroll(argv.student_id, argv.course_id);
 }
