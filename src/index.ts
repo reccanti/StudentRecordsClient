@@ -4,6 +4,7 @@ import axios from 'axios'
 
 import StudentRequest from './requests/Student';
 import MajorRequest from './requests/Major';
+import CourseRequest from './requests/Course';
 
 const base_url = process.env["API_URL"];
 
@@ -19,7 +20,15 @@ const argv = yargs
             }
         });
     })
-    .command('courses', 'Get a list of courses')
+    .command('course [id]', 'Get a list of courses', yargs => {
+        return yargs.options({
+            'e': {
+                alias: "enrolledStudents",
+                describe: 'List the students who are currently enrolled in the course',
+                type: 'boolean'
+            }
+        });
+    })
     .help()
     .argv;
 
@@ -30,7 +39,7 @@ if (argv._[0] === 'major') {
     if (argv.id) {
         MajorRequest.getById(argv.id);
     }
-    
+
     // multiple majors
     else {
         MajorRequest.getAll();
@@ -38,17 +47,23 @@ if (argv._[0] === 'major') {
 }
 
 // display all courses
-else if (argv._[0] === 'courses') {
-    console.log('\nCourses: \n')
-    axios
-        .get(`${base_url}/api/course`)
-        .then( response => {
-            response.data.map( course => {
-                console.log(`ID: ${course.id}`);
-                console.log(`Name: ${course.name}`);
-                console.log(`Required Major ID: ${course.major_id}\n`);
-            });
-        });
+else if (argv._[0] === 'course') {
+    
+    // single course
+    if (argv.id) {
+
+        // enrolled student
+        if (argv.enrolledStudents) {
+            CourseRequest.getEnrolledStudents(argv.id);
+        } else {
+            CourseRequest.getById(argv.id);
+        }
+    }
+
+    // multiple courses
+    else {
+        CourseRequest.getAll();
+    }
 }
 
 
