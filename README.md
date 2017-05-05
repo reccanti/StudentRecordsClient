@@ -1,6 +1,6 @@
 # StudentRecordsClient
 
-A command line client for accessing Student Records data. The goal of this was to provide a lightweight 'view' that wrapped around the API described in the [StudentRecords Server](https://github.com/reccanti/StudentRecordsClient/).
+A command line client for accessing Student Records data. The goal of this was to provide a lightweight 'view' that wrapped around the API described in the [StudentRecords Server](https://github.com/reccanti/StudentRecords/).
 
 There are 3 general parts to this client: a simple command line parser, groups of API requesters, and groups of text formatters. The command line parser interprets the user's input and connects it to the appropriate response. The API requesters are responsible for making AJAX requests to the server. And the text formatters take the JSON data that was fetched from the server and put it into a more legible format.
 
